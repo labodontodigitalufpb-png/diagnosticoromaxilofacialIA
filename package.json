@@ -1,0 +1,17 @@
+{
+  "name": "oromaxillofacial-ai-helper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Oromaxillofacial AI Helper Android wrapper",
+  "scripts": {
+    "sync": "cap sync android",
+    "apk": "cap sync android && cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/core": "^7.4.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.4"
+  }
+}

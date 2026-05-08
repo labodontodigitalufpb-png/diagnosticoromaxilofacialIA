@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Node/Capacitor
+node_modules/
+npm-debug.log*
+
+# Android/Gradle build output
+android/.gradle/
+android/build/
+android/app/build/
+
+# Local/editor files
+.idea/
+.vscode/
+*.swp
+
+# Archived duplicate frontends with embedded Git metadata
+services/front end/
+services/front-end-HEALTH-IA/

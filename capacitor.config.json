@@ -1,0 +1,8 @@
+{
+  "appId": "br.ufpb.oromaxillofacialai",
+  "appName": "Oromaxillofacial AI Helper",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
