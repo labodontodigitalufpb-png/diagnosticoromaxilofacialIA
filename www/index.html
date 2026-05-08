@@ -841,7 +841,7 @@
         }
 
         if(!res || !res.ok){
-          throw new Error("Não foi possível concluir o processamento.");
+          throw new Error(`Não foi possível acessar a API em ${base}. Verifique se o backend FastAPI está em execução.`);
         }
 
         const data = await res.json();
