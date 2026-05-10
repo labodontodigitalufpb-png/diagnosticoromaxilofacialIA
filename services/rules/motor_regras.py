@@ -7,6 +7,7 @@ MALIGNAS = {
     "carcinoma_odontogenico_esclerosante",
     "carcinoma_odontogenico_celulas_claras",
     "sarcoma_odontogenico",
+    "osteossarcoma_gnatico",
     "metastase_ossea_gnatica",
     "mieloma_multiplo",
     "linfoma_osseo",
