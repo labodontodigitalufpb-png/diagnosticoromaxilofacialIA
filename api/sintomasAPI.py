@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query
-from services.executarService import DiagnosticoIA
 
 router = APIRouter(prefix="/sintomas", tags=["Sintomas"])
 
@@ -9,6 +8,8 @@ diagnosticoIA = None
 def get_diagnostico_ia():
     global diagnosticoIA
     if diagnosticoIA is None:
+        from services.executarService import DiagnosticoIA
+
         diagnosticoIA = DiagnosticoIA()
     return diagnosticoIA
 
