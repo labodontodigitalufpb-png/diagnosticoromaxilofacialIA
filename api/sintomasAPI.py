@@ -3,7 +3,14 @@ from services.executarService import DiagnosticoIA
 
 router = APIRouter(prefix="/sintomas", tags=["Sintomas"])
 
-diagnosticoIA = DiagnosticoIA()
+diagnosticoIA = None
+
+
+def get_diagnostico_ia():
+    global diagnosticoIA
+    if diagnosticoIA is None:
+        diagnosticoIA = DiagnosticoIA()
+    return diagnosticoIA
 
 @router.get("/predict")
 def predict(
@@ -25,4 +32,4 @@ def predict(
     ]
     texto = ", ".join([parte.strip() for parte in partes if str(parte).strip()])
     descricoes = [s.strip() for s in texto.split(",") if s.strip()]
-    return diagnosticoIA.predict_simples(descricoes)
+    return get_diagnostico_ia().predict_simples(descricoes)
