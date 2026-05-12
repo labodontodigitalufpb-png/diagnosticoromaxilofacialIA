@@ -685,7 +685,7 @@
   <script>
     const $ = (id) => document.getElementById(id);
 
-    const SERVICE_BASE = "http://127.0.0.1:8000";
+    const SERVICE_BASE = window.location.origin;
     const idade = $("idade");
     const sexo = $("sexo");
     const resultado = $("resultado");

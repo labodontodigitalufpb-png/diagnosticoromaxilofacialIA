@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from api.sintomasAPI import router as sintomas_router
 
 app = FastAPI()
@@ -23,9 +24,12 @@ app.add_middleware(
 app.include_router(sintomas_router, tags=["Sintomas"])
 
 
-@app.get("/")
+@app.get("/health")
 async def raiz():
     return {"message": "Welcome to Oromaxillofacial AI Helper API"}
+
+
+app.mount("/", StaticFiles(directory="www", html=True), name="static")
 
 
 
