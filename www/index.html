@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Diagnóstico Oromaxilofacial IA</title>
+  <title>OralAI Imagem</title>
 
   <style>
     :root{
@@ -289,12 +289,12 @@
   <main class="app">
     <section class="panel">
       <header>
-        <img class="logo" src="./logo.jpg" alt="Logo LABODIGIT / UFPB" />
+        <img class="logo" src="./logo.png" alt="Logo OralAI Imagem" />
         <div>
-          <h1>Diagnóstico Oromaxilofacial IA</h1>
+          <h1>OralAI Imagem</h1>
           <div class="subtitle">Marque os achados clínicos e imaginológicos observados para obter hipóteses diagnósticas prováveis.</div>
           <div class="metadata">
-            <span class="metaItem">Modelo empregado: OromaxillofacialAI</span>
+            <span class="metaItem">Modelo empregado: OralAI Imagem</span>
             <span class="metaItem">IA: Híbrido TF-IDF + ComplementNB + perfis semiológicos</span>
             <span class="metaItem">Acurácia de validação: 91,93%</span>
           </div>
@@ -332,8 +332,6 @@
             <label class="checkItem"><input type="checkbox" data-group="modalidade" value="ressonância magnética">Ressonância magnética</label>
             <label class="checkItem"><input type="checkbox" data-group="modalidade" value="ultrassonografia">Ultrassonografia</label>
             <label class="checkItem"><input type="checkbox" data-group="modalidade" value="PET medicina nuclear">PET / Medicina nuclear</label>
-            <label class="checkItem"><input type="checkbox" data-group="modalidade" value="histopatologia">Histopatologia</label>
-            <label class="checkItem"><input type="checkbox" data-group="modalidade" value="clínico e imagem combinados">Clínico + imagem combinados</label>
           </div>
         </div>
 
@@ -353,6 +351,7 @@
             <label class="checkItem"><input type="checkbox" data-group="planos visualizados" value="axial">Axial</label>
             <label class="checkItem"><input type="checkbox" data-group="planos visualizados" value="coronal">Coronal</label>
             <label class="checkItem"><input type="checkbox" data-group="planos visualizados" value="sagital">Sagital</label>
+            <label class="checkItem"><input type="checkbox" data-group="planos visualizados" value="uniplanar">Uniplanar</label>
             <label class="checkItem"><input type="checkbox" data-group="planos visualizados" value="reconstrução 3D">Reconstrução 3D</label>
           </div>
         </div>
@@ -372,20 +371,11 @@
         <div class="subgroup">
           <span class="subgroupTitle">Densidade</span>
           <div class="checkGrid">
-            <label class="checkItem"><input type="checkbox" data-group="densidade" value="radiolúcido">Radiolúcido</label>
-            <label class="checkItem"><input type="checkbox" data-group="densidade" value="predominantemente radiolúcido">Predominantemente radiolúcido</label>
+            <label class="checkItem"><input type="checkbox" data-group="densidade" value="hipodenso">Hipodenso</label>
+            <label class="checkItem"><input type="checkbox" data-group="densidade" value="hiperdenso">Hiperdenso</label>
             <label class="checkItem"><input type="checkbox" data-group="densidade" value="misto">Misto</label>
-            <label class="checkItem"><input type="checkbox" data-group="densidade" value="predominantemente radiopaco">Predominantemente radiopaco</label>
-            <label class="checkItem"><input type="checkbox" data-group="densidade" value="radiopaco">Radiopaco</label>
-          </div>
-        </div>
-
-        <div class="subgroup">
-          <span class="subgroupTitle">Tomografia</span>
-          <div class="checkGrid">
-            <label class="checkItem"><input type="checkbox" data-group="tomografia" value="hipodenso">Hipodenso</label>
-            <label class="checkItem"><input type="checkbox" data-group="tomografia" value="hiperdenso">Hiperdenso</label>
-            <label class="checkItem"><input type="checkbox" data-group="tomografia" value="misto em tomografia">Misto</label>
+            <label class="checkItem"><input type="checkbox" data-group="densidade" value="hipoecoico">Hipoecoico</label>
+            <label class="checkItem"><input type="checkbox" data-group="densidade" value="hiperecoico">Hiperecoico</label>
           </div>
         </div>
 
@@ -418,6 +408,8 @@
             <label class="checkItem"><input type="checkbox" data-group="aspecto de imagem" value="vidro fosco">Vidro fosco</label>
             <label class="checkItem"><input type="checkbox" data-group="aspecto de imagem" value="driven snow">Driven snow</label>
             <label class="checkItem"><input type="checkbox" data-group="aspecto de imagem" value="granular">Granular</label>
+            <label class="checkItem"><input type="checkbox" data-group="aspecto de imagem" value="raios de sol">Raios de sol</label>
+            <label class="checkItem"><input type="checkbox" data-group="aspecto de imagem" value="sem aspecto específico">Sem aspecto específico</label>
           </div>
         </div>
 
@@ -431,6 +423,7 @@
             <label class="checkItem"><input type="checkbox" data-group="conteúdo interno" value="calcificações grosseiras">Calcificações grosseiras</label>
             <label class="checkItem"><input type="checkbox" data-group="conteúdo interno" value="material dentiforme">Material dentiforme</label>
             <label class="checkItem"><input type="checkbox" data-group="conteúdo interno" value="tecido mole">Tecido mole</label>
+            <label class="checkItem"><input type="checkbox" data-group="conteúdo interno" value="desconhecido">Desconhecido</label>
           </div>
         </div>
       </section>
@@ -580,6 +573,7 @@
             <label class="checkItem"><input type="checkbox" data-group="estruturas relacionadas" value="seio maxilar">Seio maxilar</label>
             <label class="checkItem"><input type="checkbox" data-group="estruturas relacionadas" value="cavidade nasal">Cavidade nasal</label>
             <label class="checkItem"><input type="checkbox" data-group="estruturas relacionadas" value="cortical basal">Cortical basal</label>
+            <label class="checkItem"><input type="checkbox" data-group="estruturas relacionadas" value="outras">Outras</label>
           </div>
         </div>
       </section>
@@ -612,6 +606,7 @@
             <label class="checkItem"><input type="checkbox" data-group="sinais clínicos" value="drenagem">Drenagem</label>
             <label class="checkItem"><input type="checkbox" data-group="sinais clínicos" value="fístula">Fístula</label>
             <label class="checkItem"><input type="checkbox" data-group="sinais clínicos" value="sangramento">Sangramento</label>
+            <label class="checkItem"><input type="checkbox" data-group="sinais clínicos" value="sem sinais clínicos">Sem sinais clínicos</label>
           </div>
         </div>
 
@@ -626,6 +621,7 @@
             <label class="checkItem"><input type="checkbox" data-group="dentes envolvidos" value="mobilidade dentária">Mobilidade</label>
             <label class="checkItem"><input type="checkbox" data-group="dentes envolvidos" value="reabsorção radicular">Reabsorção radicular</label>
             <label class="checkItem"><input type="checkbox" data-group="dentes envolvidos" value="retenção dentária">Retenção dentária</label>
+            <label class="checkItem"><input type="checkbox" data-group="dentes envolvidos" value="sem relação com os dentes">Sem relação com os dentes</label>
           </div>
         </div>
 
@@ -677,7 +673,7 @@
       <div class="resultBox conduta" id="condutaResultado">—</div>
 
       <footer>
-        UFPB • LABODIGIT • Diagnóstico Oromaxilofacial IA
+        UFPB • LABODIGIT • OralAI Imagem
       </footer>
     </section>
   </main>
@@ -702,7 +698,6 @@
       "planos visualizados": "planos visualizados",
       "número de exames": "número de exames",
       "densidade": "densidade",
-      "tomografia": "tomografia",
       "compartimentalização": "compartimentalização",
       "septações internas": "septações internas",
       "aspecto de imagem": "aspecto de imagem",
@@ -769,7 +764,6 @@
         "axial",
         "coronal",
         "sagital",
-        "radiolúcido",
         "hipodenso",
         "unilocular",
         "conteúdo cístico",
