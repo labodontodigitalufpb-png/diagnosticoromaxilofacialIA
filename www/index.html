@@ -53,14 +53,16 @@
 
     header{
       display:flex;
+      flex-direction: column;
       align-items:center;
+      text-align:center;
       gap:14px;
       margin-bottom:14px;
     }
 
     .logo{
-      width:380px;
-      height:380px;
+      width:min(760px, 100%);
+      height:auto;
       border-radius:8px;
       object-fit:contain;
       background:#fff;
@@ -87,6 +89,7 @@
       display:flex;
       gap:8px;
       flex-wrap:wrap;
+      justify-content:center;
       margin-top:10px;
     }
 
@@ -256,19 +259,14 @@
 
     @media (max-width: 940px){
       h1{ font-size: 22px; }
-      .logo{ width: 300px; height: 300px; }
+      .logo{ width:min(600px, 100%); }
       .checkGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 560px){
       body{ padding:14px; }
-      header{
-        flex-direction: column;
-        align-items: flex-start;
-      }
       .logo{
-        width: 264px;
-        height: 264px;
+        width:min(528px, 100%);
       }
       .demographics,
       .checkGrid{
@@ -289,7 +287,7 @@
   <main class="app">
     <section class="panel">
       <header>
-        <img class="logo" src="./logo.png?v=logo-380-20260514" alt="Logo OralAI Imagem" />
+        <img class="logo" src="./logo.png?v=logo-760-20260514" alt="Logo OralAI Imagem" />
         <div>
           <h1>OralAI Imagem</h1>
           <div class="subtitle">Marque os achados clínicos e imaginológicos observados para obter hipóteses diagnósticas prováveis.</div>
