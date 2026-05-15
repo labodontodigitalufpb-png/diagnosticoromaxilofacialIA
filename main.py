@@ -24,6 +24,15 @@ app.add_middleware(
 app.include_router(sintomas_router, tags=["Sintomas"])
 
 
+@app.middleware("http")
+async def add_static_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path in {"/", "/index.html", "/logo.png"}:
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+    return response
+
+
 @app.get("/health")
 async def raiz():
     return {"message": "Welcome to Oromaxillofacial AI Helper API"}
