@@ -3,6 +3,7 @@
   "appName": "Oromaxillofacial AI Helper",
   "webDir": "www",
   "server": {
+    "url": "https://diagnosticoromaxilofacialia-production.up.railway.app",
     "androidScheme": "https"
   }
 }
