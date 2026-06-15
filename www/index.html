@@ -669,7 +669,7 @@
       <label>Hipótese provável</label>
       <div class="resultBox" id="resultado">—</div>
 
-      <label>Conduta proposta</label>
+      <label>Relatório condensado e conduta sugerida</label>
       <div class="resultBox conduta" id="condutaResultado">—</div>
 
       <footer>
@@ -723,6 +723,35 @@
       "linfonodos": "linfonodos"
     };
 
+    const IMAGING_REPORT_GROUPS = [
+      "modalidade",
+      "qualidade do exame",
+      "planos visualizados",
+      "número de exames",
+      "densidade",
+      "compartimentalização",
+      "septações internas",
+      "aspecto de imagem",
+      "conteúdo interno",
+      "limites",
+      "cortical periférica",
+      "contorno",
+      "zona de transição",
+      "comportamento da borda",
+      "tamanho",
+      "evolução",
+      "volume ósseo comprometido",
+      "arcada",
+      "região anatômica",
+      "posição",
+      "lateralidade",
+      "estruturas relacionadas",
+      "dentes envolvidos",
+      "corticais",
+      "partes moles",
+      "linfonodos"
+    ];
+
     function setStatus(type, text){
       statusDot.className = "dot";
       if(type === "ok") statusDot.classList.add("ok");
@@ -753,6 +782,70 @@
       });
 
       return partes.join(", ");
+    }
+
+    function formatGroupSummary(group){
+      const values = checkedValues(group);
+      if(!values.length) return "";
+
+      return `${GROUP_LABELS[group]}: ${values.join(", ")}`;
+    }
+
+    function buildImagingSummary(){
+      const linhas = IMAGING_REPORT_GROUPS
+        .map(formatGroupSummary)
+        .filter(Boolean);
+
+      return linhas.length
+        ? linhas.map((linha) => `- ${linha}`).join("\n")
+        : "- Nenhuma característica imaginológica foi selecionada.";
+    }
+
+    function formatConduta(c){
+      if(!c) return "Conduta não disponível para as hipóteses formuladas.";
+
+      return [
+        c.conduta_clinica ? `Conduta clínica: ${c.conduta_clinica}` : "",
+        c.conduta_diagnostica ? `Conduta diagnóstica: ${c.conduta_diagnostica}` : "",
+        c.tipo_biopsia ? `Biópsia/procedimento: ${c.tipo_biopsia}` : "",
+        c.exames_complementares ? `Exames complementares: ${c.exames_complementares}` : "",
+        c.encaminhamento ? `Encaminhamento: ${c.encaminhamento}` : "",
+        c.urgencia ? `Urgência: ${c.urgencia}` : ""
+      ].filter(Boolean).join("\n");
+    }
+
+    function buildCondensedReport(data, hipoteses){
+      const linhasHipoteses = hipoteses.map((it, i) =>
+        `${i+1}. ${it.doenca}: ${it.prob_percent}%`
+      ).join("\n");
+
+      const condutaPrincipal = data.conduta_proposta
+        ? `Conduta sugerida para a hipótese mais provável (${data.conduta_proposta.doenca}):\n${formatConduta(data.conduta_proposta)}`
+        : formatConduta(null);
+
+      const condutasDiferenciais = Array.isArray(data.condutas_por_hipotese)
+        ? data.condutas_por_hipotese.slice(1).map((item) =>
+            `${item.doenca} (${item.prob_percent}%): ${item.conduta_clinica || "conduta clínica não disponível"}`
+          )
+        : [];
+
+      const blocoDiferenciais = condutasDiferenciais.length
+        ? `\n\nCondutas dos diagnósticos diferenciais:\n${condutasDiferenciais.join("\n")}`
+        : "";
+
+      return [
+        "Relatório condensado",
+        "",
+        "Características imaginológicas descritas:",
+        buildImagingSummary(),
+        "",
+        "Hipóteses em ordem percentual:",
+        linhasHipoteses,
+        "",
+        condutaPrincipal + blocoDiferenciais,
+        "",
+        "Observação: os percentuais são estimativas de apoio à decisão e devem ser correlacionados com dados clínicos, evolução, exames complementares e histopatologia quando indicada."
+      ].join("\n");
     }
 
     btnExemplo.addEventListener("click", () => {
@@ -850,30 +943,7 @@
           resultado.textContent =
             `Hipótese provável: ${data.diagnostico_provavel}\n\nTop ${hipoteses.length} hipóteses:\n${linhas}`;
 
-          if(data.conduta_proposta){
-            const c = data.conduta_proposta;
-            const condutaLinhas = [
-              `Conduta alinhada à hipótese mais provável: ${c.doenca}`,
-              c.conduta_clinica ? `Conduta clínica: ${c.conduta_clinica}` : "",
-              c.conduta_diagnostica ? `Conduta diagnóstica: ${c.conduta_diagnostica}` : "",
-              c.tipo_biopsia ? `Biópsia/procedimento: ${c.tipo_biopsia}` : "",
-              c.exames_complementares ? `Exames complementares: ${c.exames_complementares}` : "",
-              c.encaminhamento ? `Encaminhamento: ${c.encaminhamento}` : "",
-              c.urgencia ? `Urgência: ${c.urgencia}` : ""
-            ].filter(Boolean);
-
-            const diferenciais = Array.isArray(data.condutas_por_hipotese)
-              ? data.condutas_por_hipotese.slice(1).map((item) =>
-                  `${item.doenca}: ${item.conduta_clinica}`
-                )
-              : [];
-
-            condutaResultado.textContent = diferenciais.length
-              ? `${condutaLinhas.join("\n")}\n\nCondutas dos diagnósticos diferenciais:\n${diferenciais.join("\n")}`
-              : condutaLinhas.join("\n");
-          } else {
-            condutaResultado.textContent = "Conduta não disponível para as hipóteses formuladas.";
-          }
+          condutaResultado.textContent = buildCondensedReport(data, hipoteses);
         } else {
           resultado.textContent = JSON.stringify(data, null, 2);
           condutaResultado.textContent = "—";
