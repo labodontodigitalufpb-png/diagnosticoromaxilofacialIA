@@ -37,6 +37,38 @@ class DiagnosticoIA:
         principal = condutas_hipoteses[0] if condutas_hipoteses else None
         return principal, condutas_hipoteses
 
+    def _inserir_queratocisto_por_homologia(self, hipoteses, scores_hibridos, scores_modelo):
+        """Inclui queratocisto quando ameloblastoma aparece como hipótese."""
+        if not hipoteses:
+            return hipoteses
+
+        queratocisto = "queratocisto_odontogenico"
+        if any(item["doenca"] == queratocisto for item in hipoteses):
+            return hipoteses
+
+        pos_ameloblastoma = next(
+            (
+                idx for idx, item in enumerate(hipoteses)
+                if str(item["doenca"]).startswith("ameloblastoma_")
+            ),
+            None,
+        )
+        if pos_ameloblastoma is None or queratocisto not in scores_hibridos:
+            return hipoteses
+
+        hipotese_queratocisto = {
+            "doenca": queratocisto,
+            "prob_percent": round(float(scores_hibridos.get(queratocisto, 0)) * 100, 2),
+            "prob_modelo_percent": round(float(scores_modelo.get(queratocisto, 0)) * 100, 2),
+            "inserido_por_homologia": True,
+        }
+
+        return (
+            hipoteses[:pos_ameloblastoma + 1]
+            + [hipotese_queratocisto]
+            + hipoteses[pos_ameloblastoma + 1:]
+        )
+
     def predict_simples(self, sintomas_list):
         """
         Retorna Top-3 hipóteses com percentuais (probabilidades reais do modelo).
@@ -71,6 +103,7 @@ class DiagnosticoIA:
                 "prob_percent": round(float(score) * 100, 2),
                 "prob_modelo_percent": round(scores_modelo.get(str(lbl), 0) * 100, 2),
             })
+        top3 = self._inserir_queratocisto_por_homologia(top3, scores_hibridos, scores_modelo)
 
         diagnostico_previsto = top3[0]["doenca"] if top3 else "Classe desconhecida"
         conduta_proposta, condutas_por_hipotese = self._conduta_para_hipoteses(top3)
